@@ -7,14 +7,17 @@ import {
     Platform,
     StyleSheet ,
     StatusBar,
-    Alert
+    Alert,
+    Button
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import { useTheme } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 
 import { AuthContext } from 'C:/Users/mehme/Desktop/task/components/Context';
-
 import Users from 'C:/Users/mehme/Desktop/task/model/users';
+import SignUpScreen from './SignUpScreen';
 
 const SignInScreen = ({navigation}) => {
 
@@ -105,103 +108,103 @@ const SignInScreen = ({navigation}) => {
         }
         signIn(foundUser);
     }
-
+    
+    const Stack = createNativeStackNavigator();
 
     return (
-      <View style={styles.container}>
-          <StatusBar backgroundColor='#009387' barStyle="light-content"/>
-        <View style={styles.header}>
-            <Text style={styles.text_header}>Welcome!</Text>
-        </View>
-        <View 
-            style={[styles.footer, {
-                backgroundColor: 'white'
-            }]}
-        >
-            <Text style={[styles.text_footer, {
-                color: 'black'
-            }]}>Username</Text>
-            <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                    color={'black'}
-                    size={20}
-                />
-                <TextInput 
-                    placeholder="Your Username"
-                    placeholderTextColor="#666666"
-                    style={[styles.textInput, {
+        <NavigationContainer independent={true}>
+            <Stack.Screen name="Sign Up" component={SignUpScreen} />
+            <View style={styles.container}>
+                <StatusBar backgroundColor='#009387' barStyle="light-content"/>
+                <View style={styles.header}>
+                    <Text style={styles.text_header}>Welcome!</Text>
+                </View>
+                <View 
+                    style={[styles.footer, {
+                        backgroundColor: 'white'
+                    }]}
+                >
+                    <Text style={[styles.text_footer, {
                         color: 'black'
-                    }]}
-                    autoCapitalize="none"
-                    onChangeText={(val) => textInputChange(val)}
-                    onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-                />
+                    }]}>Username</Text>
+                    <View style={styles.action}>
+                        <FontAwesome 
+                            name="user-o"
+                            color={'black'}
+                            size={20}
+                        />
+                        <TextInput 
+                            placeholder="Your Username"
+                            placeholderTextColor="#666666"
+                            style={[styles.textInput, {
+                                color: 'black'
+                            }]}
+                            autoCapitalize="none"
+                            onChangeText={(val) => textInputChange(val)}
+                            onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
+                        />
 
-            </View>
-            { data.isValidUser ? null : 
-            <View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
-            </View>
-            }
-            
+                    </View>
+                    { data.isValidUser ? null : 
+                    <View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
+                    </View>
+                    }
+                    
 
-            <Text style={[styles.text_footer, {
-                color: 'black',
-                marginTop: 35
-            }]}>Password</Text>
-            <View style={styles.action}>
-                <TextInput 
-                    placeholder="Your Password"
-                    placeholderTextColor="#666666"
-                    secureTextEntry={data.secureTextEntry ? true : false}
-                    style={[styles.textInput, {
-                        color: 'black'
-                    }]}
-                    autoCapitalize="none"
-                    onChangeText={(val) => handlePasswordChange(val)}
-                />
-                <TouchableOpacity
-                    onPress={updateSecureTextEntry}
-                >
-                </TouchableOpacity>
-            </View>
-            { data.isValidPassword ? null : 
-            <View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
-            </View>
-            }
-            
+                    <Text style={[styles.text_footer, {
+                        color: 'black',
+                        marginTop: 35
+                    }]}>Password</Text>
+                    <View style={styles.action}>
+                        <TextInput 
+                            placeholder="Your Password"
+                            placeholderTextColor="#666666"
+                            secureTextEntry={data.secureTextEntry ? true : false}
+                            style={[styles.textInput, {
+                                color: 'black'
+                            }]}
+                            autoCapitalize="none"
+                            onChangeText={(val) => handlePasswordChange(val)}
+                        />
+                        <TouchableOpacity
+                            onPress={updateSecureTextEntry}
+                        >
+                        </TouchableOpacity>
+                    </View>
+                    { data.isValidPassword ? null : 
+                    <View>
+                    <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+                    </View>
+                    }
+                    
+                    <View style={styles.button}>
+                        <TouchableOpacity
+                            style={styles.signIn}
+                            onPress={() => {loginHandle( data.username, data.password )}}
+                        >
 
-            <TouchableOpacity>
-                <Text style={{color: '#009387', marginTop:15}}>Forgot password?</Text>
-            </TouchableOpacity>
-            <View style={styles.button}>
-                <TouchableOpacity
-                    style={styles.signIn}
-                    onPress={() => {loginHandle( data.username, data.password )}}
-                >
-
-                    <Text style={[styles.textSign, {
-                        color:'teal'
-                    }]}>Sign In</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => {signIn()}}
-                    style={[styles.signIn, {
-                        borderColor: '#009387',
-                        borderWidth: 1,
-                        marginTop: 15
-                    }]}
-                >
-                    <Text style={[styles.textSign, {
-                        color: '#009387'
-                    }]}>Sign Up</Text>
-                </TouchableOpacity>
+                            <Text style={[styles.textSign, {
+                                color:'teal'
+                            }]}>Sign In</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('Sign Up')}
+                            style={[styles.signIn, {
+                                borderColor: 'white',
+                            }]
+                            }>
+                            <Text
+                            style={[styles.textUpper, {color: '#009387'}]}
+                            >Don't Have an Account?</Text>
+                            <Text
+                            style={[styles.textSign, {color: '#009387'}]}
+                            >Sign Up</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
-        </View>
-      </View>
+      </NavigationContainer>
     );
 };
 
@@ -261,17 +264,26 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        marginTop: 50
+        marginTop: 20
     },
     signIn: {
-        width: '100%',
+        width: '80%',
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10
+        borderRadius: 10,
+        borderColor: '#009387',
+        borderWidth: 1,
+        marginTop: 15,
+        marginHorizontal:8,
+
     },
     textSign: {
         fontSize: 18,
         fontWeight: 'bold'
+    },
+    textUpper:{
+        fontSize: 12,
+
     }
   });

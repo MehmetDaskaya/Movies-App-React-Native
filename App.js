@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -8,129 +10,123 @@ import HomeScreen from './screens/HomeScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
 import LoginScreen from './screens/Authentication/LoginScreen';
 import { AuthContext } from './components/Context';
+import SignUpScreen from './screens/Authentication/SignUpScreen';
 
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-
-export default function App() {
   // const [isLoading, setIsLoading] = useState(true);
   // const [userToken, setUserToken] = useState(null);
 
-  const initialLoginState = {
-    isLoading: true,
-    userName: null,
-    userToken: null,
-  }
+
+  function BottomTabsView() {
+    const initialLoginState = {
+      isLoading: true,
+      userName: null,
+      userToken: null,
+    }
+
+    const loginReducer = (prevState, action) => {
+      switch( action.type ) {
+        case 'RETRIEVE_TOKEN':
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'LOGIN':
+          return {
+            ...prevState,
+            userName: action.id,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'LOGOUT':
+          return {
+            ...prevState,
+            userName: null,
+            userToken: null,
+            isLoading: false,
+          };
+        case 'REGISTER':
+          return {
+            ...prevState,
+            userName: action.id,
+            userToken: action.token,
+            isLoading: false,
+          };
+        default:
+    }}
+    const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
+
+    const authContext = React.useMemo(() => ({
+      signIn: async (foundUser) => {
+        const userToken = String(foundUser[0].userToken);
+        const userName = String(foundUser[0].username);
   
-  const loginReducer = (prevState, action) => {
-    switch( action.type ) {
-      case 'RETRIEVE_TOKEN':
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGIN':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGOUT':
-        return {
-          ...prevState,
-          userName: null,
-          userToken: null,
-          isLoading: false,
-        };
-      case 'REGISTER':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      default:
-  }}
-
-  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-
-  const authContext = React.useMemo(() => ({
-    signIn: async (foundUser) => {
-      const userToken = String(foundUser[0].userToken);
-      const userName = String(foundUser[0].username);
-
+          try{
+            userToken = 'asdfgh';
+            console.log(userToken);
+            await AsyncStorage.setItem('userToken', userToken);
+          }
+          catch(e){
+            console.log(e);
+          }
+        
+        console.log('user token: ', userToken);
+        dispatch({ type: 'LOGIN', id: userName, token: userToken });
+  
+      },
+      signOut: async () => {
         try{
-          userToken = 'asdfgh';
-          console.log(userToken);
-          await AsyncStorage.setItem('userToken', userToken);
+          await AsyncStorage.removeItem('userToken');
         }
         catch(e){
           console.log(e);
         }
-      
-      console.log('user token: ', userToken);
-      dispatch({ type: 'LOGIN', id: userName, token: userToken });
-
-    },
-    signOut: async () => {
-      try{
-        await AsyncStorage.removeItem('userToken');
-      }
-      catch(e){
-        console.log(e);
-      }
-      dispatch({ type: 'LOGOUT' });
-    },
-    signUp: (userName, password) => {
-      let userToken;
-      userToken = null;
-      if(userName == 'user' && password == 'pass'){
-        userToken = "asdas"
-      }
-      dispatch({ type: 'REGISTER', id: userName, token: userToken });
-    },
-  }), []);
-
-  useEffect(() => {
-    setTimeout( async() => {
-      let userToken;
-      userToken = null;
-      try{
-        userToken = await AsyncStorage.getItem('userToken');
-      }
-      catch(e){
-        console.log(e);
-      }
-      dispatch({ type: 'REGISTER', token: userToken });
-    }, 1000);
-  }, []);
-
-  if (loginState.isLoading) {
+        dispatch({ type: 'LOGOUT' });
+      },
+      signUp: (userName, password) => {
+        let userToken;
+        userToken = null;
+        if(userName == 'user' && password == 'pass'){
+          userToken = "asdas"
+        }
+        dispatch({ type: 'RETRIEVE_TOKEN', id: userName, token: userToken });
+      },
+    }), []);
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="large" />
-      </View>
+      <>
+      <AuthContext.Provider value={authContext}>
+          {loginState.userToken !== null ? (                
+          <Tab.Navigator>
+            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Favorites" component={FavoritesScreen} />
+            <Tab.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
+            <Tab.Screen options={{headerShown: false}} name="Sign Up" component={SignUpScreen} />
+          </Tab.Navigator>
+          ):
+          <Stack.Navigator>
+            <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
+            <Stack.Screen name="Sign Up" component={SignUpScreen} />
+          </Stack.Navigator> 
+          }
+          </AuthContext.Provider>
+      </>
     );
   }
-
-
+  export default function App() {
 
   return (
-    <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        {loginState.userToken !== null ? (
-                  <Tab.Navigator>
-                  <Tab.Screen name="Home" component={HomeScreen} />
-                  <Tab.Screen name="Favorites" component={FavoritesScreen} />
-                  <Tab.Screen name="Login" component={LoginScreen} />
-                </Tab.Navigator>
-        ): 
-        <LoginScreen/>}
 
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen options={{headerShown: false}} name="BottomTabsView" component={BottomTabsView} />
+          <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+        </Stack.Navigator>
       </NavigationContainer>
-    </AuthContext.Provider>
+
   );
 }
