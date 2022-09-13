@@ -1,5 +1,0 @@
-API_URL="https://api.themoviedb.org/3/movie/popular?api_key=82deb1fcd05b4efc1a500a3def387a13"
-API_IMG ="https://image.tmdb.org/t/p/w500/"
-API_SEARCH = "https://api.themoviedb.org/3/search/movie?api_key=82deb1fcd05b4efc1a500a3def387a13&query"
-API_TRENDING="https://api.themoviedb.org/3/trending/all/week?api_key=82deb1fcd05b4efc1a500a3def387a13"
-API_GENRES = "https://api.themoviedb.org/3/genre/movie/list?api_key=82deb1fcd05b4efc1a500a3def387a13&language=en-US"
