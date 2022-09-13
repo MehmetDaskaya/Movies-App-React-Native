@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import { ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Ionicons} from '@expo/vector-icons';
 
+import { AuthContext } from './components/Context';
+import GlobalColors from './util/GlobalColors';
 import HomeScreen from './screens/HomeScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
 import LoginScreen from './screens/Authentication/LoginScreen';
-import { AuthContext } from './components/Context';
 import SignUpScreen from './screens/Authentication/SignUpScreen';
+import MoviesData from './model/MoviesData';
+import SplashScreen from './screens/SplashScreen';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -100,16 +103,26 @@ const Stack = createNativeStackNavigator();
       <>
       <AuthContext.Provider value={authContext}>
           {loginState.userToken !== null ? (                
-          <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Favorites" component={FavoritesScreen} />
-            <Tab.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
-            <Tab.Screen options={{headerShown: false}} name="Sign Up" component={SignUpScreen} />
+          <Tab.Navigator
+          screenOptions={{
+            tabBarHideOnKeyboard: true
+         }}
+          >
+            <Tab.Screen name="Home" component={HomeScreen} 
+            options={{
+              headerShown: false,
+              tabBarIcon: ({focused, size}) => <Ionicons style={{color: focused ? GlobalColors.Navy : GlobalColors.Grey}} name="home" size={size}/>
+            }} />
+            <Tab.Screen name="Favorites" component={FavoritesScreen} 
+            options={{
+              tabBarIcon: ({focused, size}) => <Ionicons style={{color: focused ? GlobalColors.Yellow : GlobalColors.Grey}} name="star" size={size} />
+            }} />
           </Tab.Navigator>
           ):
           <Stack.Navigator>
             <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
             <Stack.Screen name="Sign Up" component={SignUpScreen} />
+            <Stack.Screen name="Movies" component={MoviesData} />
           </Stack.Navigator> 
           }
           </AuthContext.Provider>
@@ -125,6 +138,7 @@ const Stack = createNativeStackNavigator();
           <Stack.Screen options={{headerShown: false}} name="BottomTabsView" component={BottomTabsView} />
           <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="Splash" component={SplashScreen} />
         </Stack.Navigator>
       </NavigationContainer>
 
