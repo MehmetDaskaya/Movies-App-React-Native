@@ -1,19 +1,18 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import React, {useState} from 'react'
 import {AntDesign} from '@expo/vector-icons'
 
 import { AuthContext } from 'C:/Users/mehme/Desktop/task/components/Context';
+import MoviesData from '../model/MoviesData';
 
 const HomeScreen = () => {
 
     const { signOut, } = React.useContext(AuthContext);
 
+
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
-            <AntDesign name="logout" size={36} color="white"
-            onPress={() => {signOut()}} />
-        </View>
+        <MoviesData />
     </View>
   )
 }

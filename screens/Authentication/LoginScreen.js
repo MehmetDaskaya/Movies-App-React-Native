@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { 
     View, 
     Text, 
@@ -8,7 +8,8 @@ import {
     StyleSheet ,
     StatusBar,
     Alert,
-    Button
+    Button,
+    ActivityIndicator
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
@@ -16,11 +17,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 import { AuthContext } from 'C:/Users/mehme/Desktop/task/components/Context';
+import GlobalColors from '../../util/GlobalColors';
 import Users from 'C:/Users/mehme/Desktop/task/model/users';
 import SignUpScreen from './SignUpScreen';
 
-const SignInScreen = ({navigation}) => {
 
+const SignInScreen = ({navigation}) => {
+    
+    //Giriş dataları için
     const [data, setData] = React.useState({
         username: '',
         password: '',
@@ -32,6 +36,7 @@ const SignInScreen = ({navigation}) => {
 
     const { signIn } = React.useContext(AuthContext);
 
+    //Kullanıcı adı kontrolü
     const textInputChange = (val) => {
         if( val.trim().length >= 4 ) {
             setData({
@@ -49,7 +54,7 @@ const SignInScreen = ({navigation}) => {
             });
         }
     }
-
+    //Şifre kontrolü
     const handlePasswordChange = (val) => {
         if( val.trim().length >= 8 ) {
             setData({
@@ -111,6 +116,10 @@ const SignInScreen = ({navigation}) => {
     
     const Stack = createNativeStackNavigator();
 
+    const directEnter = () => {
+        navigation.navigate('Home')
+    }
+
     return (
         <NavigationContainer independent={true}>
             <Stack.Screen name="Sign Up" component={SignUpScreen} />
@@ -140,23 +149,30 @@ const SignInScreen = ({navigation}) => {
                                 color: 'black'
                             }]}
                             autoCapitalize="none"
+                            keyboardType="ascii-capable"
                             onChangeText={(val) => textInputChange(val)}
                             onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
                         />
 
                     </View>
                     { data.isValidUser ? null : 
-                    <View animation="fadeInLeft" duration={500}>
+                    <View>
                     <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
                     </View>
                     }
                     
-
+                    
                     <Text style={[styles.text_footer, {
                         color: 'black',
                         marginTop: 35
                     }]}>Password</Text>
+                    
                     <View style={styles.action}>
+                    <FontAwesome 
+                            name="key"
+                            color={'black'}
+                            size={20}
+                        />
                         <TextInput 
                             placeholder="Your Password"
                             placeholderTextColor="#666666"
@@ -181,13 +197,14 @@ const SignInScreen = ({navigation}) => {
                     <View style={styles.button}>
                         <TouchableOpacity
                             style={styles.signIn}
-                            onPress={() => {loginHandle( data.username, data.password )}}
-                        >
+                            onPress={() => {
+                              loginHandle( data.username, data.password )}}>
 
                             <Text style={[styles.textSign, {
                                 color:'teal'
                             }]}>Sign In</Text>
                         </TouchableOpacity>
+
                         <TouchableOpacity
                             onPress={() => navigation.navigate('Sign Up')}
                             style={[styles.signIn, {
@@ -201,6 +218,13 @@ const SignInScreen = ({navigation}) => {
                             style={[styles.textSign, {color: '#009387'}]}
                             >Sign Up</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Movies')}>
+                            <View style={{marginVertical:20}}>
+                                <Text>
+                                    Direct Enter
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -213,7 +237,7 @@ export default SignInScreen;
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#009387'
+      backgroundColor: GlobalColors.Maroon
     },
     header: {
         flex: 1,
@@ -240,6 +264,9 @@ const styles = StyleSheet.create({
     },
     action: {
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#f2f2f2',
         marginTop: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#f2f2f2',

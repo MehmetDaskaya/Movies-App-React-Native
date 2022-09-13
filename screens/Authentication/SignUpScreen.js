@@ -66,6 +66,7 @@ const SignUpScreen = ({navigation}) => {
         }
     }
 
+
     const updateSecureTextEntry = () => {
         setData({
             ...data,
