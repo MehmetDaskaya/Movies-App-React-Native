@@ -9,15 +9,14 @@ import {
     StyleSheet ,
     StatusBar,
     Alert,
-    Button
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
-import { AuthContext } from 'C:/Users/mehme/Desktop/task/components/Context';
-import Users from 'C:/Users/mehme/Desktop/task/model/users';
+import { AuthContext } from '@Context';
+import Users from '@Users';
 
 const SignUpScreen = ({navigation}) => {
 

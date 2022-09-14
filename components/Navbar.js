@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import {AntDesign} from '@expo/vector-icons'
 
-import { AuthContext } from 'C:/Users/mehme/Desktop/task/components/Context';
+import {AuthContext} from './Context'
 
 const Navbar = () => {
     const { signOut, } = React.useContext(AuthContext);

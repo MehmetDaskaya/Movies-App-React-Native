@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { 
     View, 
     Text, 
@@ -7,18 +7,16 @@ import {
     Platform,
     StyleSheet ,
     StatusBar,
-    Alert,
-    Button,
-    ActivityIndicator
+    Alert
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
-import { AuthContext } from 'C:/Users/mehme/Desktop/task/components/Context';
-import GlobalColors from '../../util/GlobalColors';
-import Users from 'C:/Users/mehme/Desktop/task/model/users';
+import { AuthContext } from '@Context';
+import Users from '@Users';
+import GlobalColors from '@GlobalColors';
 import SignUpScreen from './SignUpScreen';
 
 

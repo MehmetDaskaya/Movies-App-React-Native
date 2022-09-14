@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Ionicons} from '@expo/vector-icons';
 
-import { AuthContext } from './components/Context';
+import { AuthContext } from '@Context';
 import GlobalColors from './util/GlobalColors';
 import HomeScreen from './screens/HomeScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
@@ -15,12 +15,8 @@ import MoviesData from './model/MoviesData';
 import SplashScreen from './screens/SplashScreen';
 
 
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [userToken, setUserToken] = useState(null);
 
 
   function BottomTabsView() {

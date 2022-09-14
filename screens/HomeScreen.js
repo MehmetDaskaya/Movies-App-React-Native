@@ -1,14 +1,9 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React, {useState} from 'react'
-import {AntDesign} from '@expo/vector-icons'
+import { View, StyleSheet } from 'react-native'
+import React from 'react'
 
-import { AuthContext } from 'C:/Users/mehme/Desktop/task/components/Context';
 import MoviesData from '../model/MoviesData';
 
 const HomeScreen = () => {
-
-    const { signOut, } = React.useContext(AuthContext);
-
 
   return (
     <View style={styles.container}>

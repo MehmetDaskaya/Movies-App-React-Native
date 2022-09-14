@@ -1,5 +1,5 @@
 import { View, Text, ActivityIndicator, StyleSheet  } from 'react-native'
-import React, {useState} from 'react'
+import React from 'react'
 
 const SplashScreen = () => {
 
