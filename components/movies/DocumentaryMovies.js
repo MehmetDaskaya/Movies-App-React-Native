@@ -2,14 +2,14 @@ import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 import MoviesBox from "./MoviesBox";
 
-const ComedyMovies = ({ style }) => {
-  const API_COMEDY =
-    "https://api.themoviedb.org/3/discover/movie?api_key=82deb1fcd05b4efc1a500a3def387a13&with_genres=35";
+const DocumentaryMovies = ({ style }) => {
+  const API_DOCUMENTARY =
+    "https://api.themoviedb.org/3/discover/movie?api_key=82deb1fcd05b4efc1a500a3def387a13&with_genres=99&include_adult=false";
 
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch(API_COMEDY)
+    fetch(API_DOCUMENTARY)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -30,7 +30,7 @@ const ComedyMovies = ({ style }) => {
   );
 };
 
-export default ComedyMovies;
+export default DocumentaryMovies;
 
 const styles = StyleSheet.create({
   container: {
