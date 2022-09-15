@@ -1,16 +1,18 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 const Box = () => {
     const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate( 'SignUpScreen' )} style={styles.box}>
+    <TouchableOpacity onPress={() => navigation.navigate( 'Home' )} style={styles.box}>
         <View style={styles.container}>
-            <View style={styles.imageBox}></View>
+            <View style={styles.imageBox}>
+                <Image/>
+            </View>
             <View style={styles.infoBox}>
-                <Text style={styles.title}>Title</Text>
-                <Text style={styles.description}>Description</Text>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.description}>{item.overview}</Text>
                 
             </View>
         </View>

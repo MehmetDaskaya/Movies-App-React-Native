@@ -3,11 +3,12 @@ import React, {useState} from 'react'
 import MoviePage from './MoviePage';
 import {Ionicons} from '@expo/vector-icons'; 
 import GlobalColors from '../../util/GlobalColors';
+import AddFavorites from '../AddFavorites';
 
 
 const API_IMG = "https://image.tmdb.org/t/p/w500";
 
-const MoviesBox = ({title, poster_path, vote_average, overview, release_date}) => {
+const MoviesBox = ({title, poster_path, vote_average, overview, release_date, id}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const IMG_URL = API_IMG+poster_path;
 
@@ -24,10 +25,12 @@ const MoviesBox = ({title, poster_path, vote_average, overview, release_date}) =
         style={styles.modalButton}
         onPress={() => {setModalVisible(!modalVisible);
         }}>
+          
           <Ionicons style={{}} color= "white" name="ios-arrow-back-circle-outline" size={50} />
+          <Text style={styles.modalText}>Home Page</Text>
         </TouchableOpacity> 
 
-        <MoviePage title={title} overview={overview} poster_path={poster_path} vote_average={vote_average} release_date={release_date}/>
+        <MoviePage title={title} overview={overview} poster_path={poster_path} vote_average={vote_average} release_date={release_date} id={id}/>
 
       </Modal>
       </View>
@@ -35,15 +38,21 @@ const MoviesBox = ({title, poster_path, vote_average, overview, release_date}) =
           style={styles.movieCarousel}
             horizontal={true}
             showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity
-        onPress={() => setModalVisible(true)}>
-          <View  >
-              <Image 
-              style={styles.image}
-              source={{uri:IMG_URL}}
-              resizeMode={"cover"}/>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.moviesCard}>
+            <TouchableOpacity
+          onPress={() => setModalVisible(true)}>
+            <View  >
+                <Image 
+                style={styles.image}
+                source={{uri:IMG_URL}}
+                resizeMode={"cover"}/>
+            </View>
+            <View style={styles.movieTitleContainer}>
+              <Text numberOfLines={1} style={styles.movieTitle}>{title}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
         </View>
     </View>
   )
@@ -69,16 +78,40 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   movieCarousel: {
-    paddingRight:4
+    paddingRight: 4,
   },
   modalButton: {
     backgroundColor: GlobalColors.DarkBlue,
-    height: 50,
-    width: 50,
-    borderRadius: 20,
-    marginTop: 20,
+    height: 70,
+    width: "100%",
+    paddingTop: 20,
+    paddingLeft: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  modalText: {
+    flex:3,
+    color: "white",
+    fontSize: 16,
+    alignSelf: "center",
   },
   modal: {
     backgroundColor: GlobalColors.DarkBlue,
-  }
+    flex:1,
+  },
+  movieTitleContainer:{
+    flex:1,
+    alignItems: "center",
+  },
+  movieTitle: {
+    maxWidth: 100,
+    fontSize: 12,
+    fontWeight:"bold",
+    color: "white",
+  },
+  moviesCard: {
+    backgroundColor: GlobalColors.Navy,
+    padding: 4,
+    borderRadius: 10,
+  },
 });

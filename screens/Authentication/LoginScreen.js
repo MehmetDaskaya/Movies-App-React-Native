@@ -7,7 +7,8 @@ import {
     Platform,
     StyleSheet ,
     StatusBar,
-    Alert
+    Alert,
+    KeyboardAvoidingView
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
@@ -121,18 +122,14 @@ const SignInScreen = ({navigation}) => {
     return (
         <NavigationContainer independent={true}>
             <Stack.Screen name="Sign Up" component={SignUpScreen} />
-            <View style={styles.container}>
-                <StatusBar backgroundColor='#009387' barStyle="light-content"/>
-                <View style={styles.header}>
-                    <Text style={styles.text_header}>Welcome!</Text>
-                </View>
+            <KeyboardAvoidingView style={styles.container}>
+                <StatusBar barStyle="light-content"/>
+                
                 <View 
-                    style={[styles.footer, {
-                        backgroundColor: 'white'
-                    }]}
+                    style={[styles.footer]}
                 >
                     <Text style={[styles.text_footer, {
-                        color: 'black'
+                        color: 'white'
                     }]}>Username</Text>
                     <View style={styles.action}>
                         <FontAwesome 
@@ -161,7 +158,7 @@ const SignInScreen = ({navigation}) => {
                     
                     
                     <Text style={[styles.text_footer, {
-                        color: 'black',
+                        color: 'white',
                         marginTop: 35
                     }]}>Password</Text>
                     
@@ -199,21 +196,20 @@ const SignInScreen = ({navigation}) => {
                               loginHandle( data.username, data.password )}}>
 
                             <Text style={[styles.textSign, {
-                                color:'teal'
+                                color:'white'
                             }]}>Sign In</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => navigation.navigate('Sign Up')}
-                            style={[styles.signIn, {
-                                borderColor: 'white',
-                            }]
+                            style={[styles.signIn, 
+                                 {borderColor: GlobalColors.DarkBlue},]
                             }>
                             <Text
-                            style={[styles.textUpper, {color: '#009387'}]}
+                            style={[styles.textUpper, {color: "white"}]}
                             >Don't Have an Account?</Text>
                             <Text
-                            style={[styles.textSign, {color: '#009387'}]}
+                            style={[styles.textSign, {color: 'white'}]}
                             >Sign Up</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('Movies')}>
@@ -225,7 +221,9 @@ const SignInScreen = ({navigation}) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+                <View style={styles.header}>
+                </View>
+            </KeyboardAvoidingView>
       </NavigationContainer>
     );
 };
@@ -235,26 +233,32 @@ export default SignInScreen;
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: GlobalColors.Maroon
+      backgroundColor: "white"
     },
     header: {
         flex: 1,
         justifyContent: 'flex-end',
         paddingHorizontal: 20,
-        paddingBottom: 50
     },
     footer: {
-        flex: 3,
-        backgroundColor: '#fff',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        paddingHorizontal: 20,
-        paddingVertical: 30
+        flex: 6,
+        backgroundColor: GlobalColors.DarkBlue,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        paddingHorizontal: 40,
+        paddingVertical: 30,
+        marginRight: 20,
+        marginLeft: 30,
+        paddingTop: 120,
+        shadowColor: "blue",
+        elevation: 400,
+        
     },
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 30,
+        paddingBottom: 20
     },
     text_footer: {
         color: '#05375a',
@@ -267,8 +271,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#f2f2f2',
         marginTop: 10,
         borderBottomWidth: 1,
+        borderRadius: 12,
         borderBottomColor: '#f2f2f2',
-        paddingBottom: 5
+        paddingLeft:10,
+        paddingVertical: 5,
     },
     actionError: {
         flexDirection: 'row',
@@ -279,7 +285,6 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        marginTop: Platform.OS === 'ios' ? 0 : -12,
         paddingLeft: 10,
         color: '#05375a',
     },
@@ -297,7 +302,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        borderColor: '#009387',
+        borderColor: 'white',
         borderWidth: 1,
         marginTop: 15,
         marginHorizontal:8,

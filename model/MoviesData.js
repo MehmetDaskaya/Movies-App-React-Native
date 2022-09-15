@@ -2,11 +2,12 @@ import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
 import React, {useState, useEffect} from 'react';
 
 import MoviesBox from '../components/movies/MoviesBox';
-import TrendingMovies from '../components/movies/TrendingMovies';
+import DocumentaryMovies from '../components/movies/DocumentaryMovies';
 import HorrorMovies from '../components/movies/HorrorMovies';
 import ComedyMovies from '../components/movies/ComedyMovies';
 import Navbar from '../components/Navbar';
 import SplashScreen from '../screens/SplashScreen';
+import SearchMovies from '../components/movies/SearchMovies';
 
 const MoviesData = ({navigation}) => {
   API_URL="https://api.themoviedb.org/3/movie/popular?api_key=82deb1fcd05b4efc1a500a3def387a13";
@@ -14,6 +15,7 @@ const MoviesData = ({navigation}) => {
 
   const [movies, setMovies] = useState([]);
   const [isFetching, setIsfetching] = useState(true);
+
 
   useEffect(() => {
     async function fetchData(){
@@ -27,16 +29,11 @@ const MoviesData = ({navigation}) => {
         setInterval(() => {
           setIsfetching(false); 
         }, 1000);
-   
       })
     }
-    
     fetchData();
   }, []);
 
-  if (isFetching) {
-    return <SplashScreen/>
-}
 
   return (
     <View>
@@ -47,22 +44,8 @@ const MoviesData = ({navigation}) => {
         <View style={styles.container}>
 
           <View>
-            <TextInput
-            style={styles.searchBox}
-            value={movies.s}
-            onChangeText={text => setMovies(prevState => {
-              return {...prevState, s: text}
-            })}
-            />
+            <SearchMovies/>
           </View>
-
-          <View style={styles.subTitle}>
-            <Text style={styles.subTitleText}>Trending Movies</Text>
-          </View>
-          <View style={styles.movieCarousel}>
-            <TrendingMovies/>
-          </View>
-          
 
           <View style={styles.subTitle}>
             <Text style={styles.subTitleText}>Popular Movies</Text>
@@ -71,9 +54,8 @@ const MoviesData = ({navigation}) => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           style={styles.movieCarousel} >
-            {movies.map((movieRequest) => <MoviesBox
-            
-            key={movieRequest.id} {...movieRequest}/>)}  
+            {movies.map((movieRequest) =>
+             <MoviesBox  key={movieRequest.id} {...movieRequest}/>)}  
           </ScrollView>
 
 
@@ -89,6 +71,13 @@ const MoviesData = ({navigation}) => {
           </View>
           <View style={styles.movieCarousel}>
             <ComedyMovies/>
+          </View>
+
+          <View style={styles.subTitle}>
+            <Text style={styles.subTitleText}>Documentaries</Text>
+          </View>
+          <View style={styles.movieCarousel}>
+            <DocumentaryMovies/>
           </View>
 
         </View>

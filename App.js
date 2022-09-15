@@ -13,6 +13,9 @@ import LoginScreen from './screens/Authentication/LoginScreen';
 import SignUpScreen from './screens/Authentication/SignUpScreen';
 import MoviesData from './model/MoviesData';
 import SplashScreen from './screens/SplashScreen';
+import TestMovies from './components/movies/TestMovies';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 
 const Tab = createBottomTabNavigator();
@@ -97,6 +100,7 @@ const Stack = createNativeStackNavigator();
     }), []);
     return (
       <>
+      <Provider store={store}>
       <AuthContext.Provider value={authContext}>
           {loginState.userToken !== null ? (                
           <Tab.Navigator
@@ -113,6 +117,10 @@ const Stack = createNativeStackNavigator();
             options={{
               tabBarIcon: ({focused, size}) => <Ionicons style={{color: focused ? GlobalColors.Yellow : GlobalColors.Grey}} name="star" size={size} />
             }} />
+           <Tab.Screen name="Test" component={TestMovies} 
+            options={{
+              tabBarIcon: ({focused, size}) => <Ionicons style={{color: focused ? GlobalColors.Yellow : GlobalColors.Grey}} name="star" size={size} />
+            }} />
           </Tab.Navigator>
           ):
           <Stack.Navigator>
@@ -122,7 +130,9 @@ const Stack = createNativeStackNavigator();
           </Stack.Navigator> 
           }
           </AuthContext.Provider>
+          </Provider>
       </>
+      
     );
   }
   export default function App() {
